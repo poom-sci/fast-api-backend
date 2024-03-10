@@ -10,6 +10,6 @@ router = APIRouter(tags=["health_checks", "status"])
 
 
 #  health check endpoints
-@router.get("/heath-check", status_code=http.HTTPStatus.OK)
+@router.get("/health-check", status_code=http.HTTPStatus.OK)
 async def health_check():
     return JSONResponse(content={"status": "ok"})
