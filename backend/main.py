@@ -1,42 +1,42 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+import http
 from typing import List, Optional
 from core.schemas.schema import Ans, Item
+import logging
+from api.v1.v1 import router as v1Router
+from api.status import router as statusRouter
+from api.admin.admin import adminRouter
+import sys
 
-from v1.status import router
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.redis import RedisBackend
+from fastapi_cache.decorator import cache
 
-app = FastAPI()
-
-app.include_router(router)
-
-# In-memory storage of to-do items
-to_do_list: List[Item] = []
-
-
-# @app.get("/todos/", response_model=Ans)
-# async def read_todos():
-#     a = [i for i in range(1000)]
-#     k = Ans(name="Helo", completed=True, l=a)
-#     return k
+from fastapi.responses import JSONResponse
 
 
-# @app.post("/todos/", response_model=Item)
-# async def create_todo(item: Item):
-#     to_do_list.append(item)
-#     return item
+app = FastAPI(title="api")
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+stream_handler = logging.StreamHandler(sys.stdout)
+log_formatter = logging.Formatter(
+    "%(asctime)s [%(processName)s: %(process)d] [%(threadName)s: %(thread)d] [%(levelname)s] %(name)s: %(message)s"
+)
+stream_handler.setFormatter(log_formatter)
+logger.addHandler(stream_handler)
+
+logger.info("API is starting up")
 
 
-# @app.put("/todos/{item_id}", response_model=Item)
-# async def update_todo(item_id: int, item: Item):
-#     if item_id >= len(to_do_list):
-#         raise HTTPException(status_code=404, detail="Item not found")
-#     to_do_list[item_id] = item
-#     return item
+# root endpoint
+@app.get("/", status_code=http.HTTPStatus.OK)
+async def default():
+    print("hello world")
+    return JSONResponse(content={"status": "hello world"})
 
 
-# @app.delete("/todos/{item_id}")
-# async def delete_todo(item_id: int):
-#     if item_id >= len(to_do_list):
-#         raise HTTPException(status_code=404, detail="Item not found")
-#     to_do_list.pop(item_id)
-#     return {"detail": "Item deleted"}
+app.include_router(statusRouter, prefix="/status")
+app.include_router(v1Router, prefix="/v1")
+app.include_router(adminRouter, prefix="/admin")

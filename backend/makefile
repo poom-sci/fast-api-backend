@@ -1,3 +1,7 @@
+build-venv:
+	python3 -m venv venv
+	source venv/bin/activate
+
 build-docker:
 	docker build -t todo-api:v1 .
 
