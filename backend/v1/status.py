@@ -14,4 +14,5 @@ async def health_check():
 # root endpoint
 @router.get("/", status_code=http.HTTPStatus.OK)
 async def default():
-    return  JSONResponse(content={"status": "ok"})
+    print('hello')
+    return  JSONResponse(content={"status": "hello world"})
