@@ -13,30 +13,30 @@ app.include_router(router)
 to_do_list: List[Item] = []
 
 
-@app.get("/todos/", response_model=Ans)
-async def read_todos():
-    a = [i for i in range(1000)]
-    k = Ans(name="Helo", completed=True, l=a)
-    return k
+# @app.get("/todos/", response_model=Ans)
+# async def read_todos():
+#     a = [i for i in range(1000)]
+#     k = Ans(name="Helo", completed=True, l=a)
+#     return k
 
 
-@app.post("/todos/", response_model=Item)
-async def create_todo(item: Item):
-    to_do_list.append(item)
-    return item
+# @app.post("/todos/", response_model=Item)
+# async def create_todo(item: Item):
+#     to_do_list.append(item)
+#     return item
 
 
-@app.put("/todos/{item_id}", response_model=Item)
-async def update_todo(item_id: int, item: Item):
-    if item_id >= len(to_do_list):
-        raise HTTPException(status_code=404, detail="Item not found")
-    to_do_list[item_id] = item
-    return item
+# @app.put("/todos/{item_id}", response_model=Item)
+# async def update_todo(item_id: int, item: Item):
+#     if item_id >= len(to_do_list):
+#         raise HTTPException(status_code=404, detail="Item not found")
+#     to_do_list[item_id] = item
+#     return item
 
 
-@app.delete("/todos/{item_id}")
-async def delete_todo(item_id: int):
-    if item_id >= len(to_do_list):
-        raise HTTPException(status_code=404, detail="Item not found")
-    to_do_list.pop(item_id)
-    return {"detail": "Item deleted"}
+# @app.delete("/todos/{item_id}")
+# async def delete_todo(item_id: int):
+#     if item_id >= len(to_do_list):
+#         raise HTTPException(status_code=404, detail="Item not found")
+#     to_do_list.pop(item_id)
+#     return {"detail": "Item deleted"}

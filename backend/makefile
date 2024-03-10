@@ -1,13 +1,13 @@
 build-docker:
 	docker build -t todo-api:v1 .
 
-run-docker-compose:
+docker-compose-up:
 	docker-compose up
 
-run-dev:
+dev:
 	uvicorn main:app --reload
 
-save-pip-requirements:
+requirements:
 	pip freeze > requirements.txt
 
 lint-check:
