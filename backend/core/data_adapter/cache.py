@@ -13,9 +13,6 @@ def get_cache():
 def set_cache(key, value):
     cache[key] = value
 
-def is_cache_exists(key):
-    return key in cache
-
 
 def get_cache_value(key):
     return cache.get(key)

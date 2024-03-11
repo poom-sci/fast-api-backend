@@ -8,7 +8,6 @@ from api.v1.v1 import router as v1Router
 from api.status import router as statusRouter
 from api.admin.admin import adminRouter
 import sys
-from core.data_adapter.db import get_db
 
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
@@ -18,14 +17,17 @@ from fastapi.responses import JSONResponse
 
 
 app = FastAPI(title="api")
+
 logger = logging.getLogger(__name__)
-# logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.DEBUG)
 stream_handler = logging.StreamHandler(sys.stdout)
 log_formatter = logging.Formatter(
     "%(asctime)s [%(processName)s: %(process)d] [%(threadName)s: %(thread)d] [%(levelname)s] %(name)s: %(message)s"
 )
 stream_handler.setFormatter(log_formatter)
 logger.addHandler(stream_handler)
+
+logger.info("API is starting up")
 
 
 # root endpoint
@@ -38,15 +40,3 @@ async def default():
 app.include_router(statusRouter, prefix="/status")
 app.include_router(v1Router, prefix="/v1")
 app.include_router(adminRouter, prefix="/admin")
-
-
-# register event handlers here
-@app.on_event("startup")
-async def startup_event():
-    logger.info("Startup Event Triggered")
-    get_db()
-
-
-@app.on_event("shutdown")
-async def shutdown_event():
-    logger.info("Shutdown Event Triggered")

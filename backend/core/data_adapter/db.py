@@ -10,8 +10,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.orm import sessionmaker
 
 from config.settings import DB
-import logging
-# from logger import logging
+from logger import logging
 
 DBTYPE_POSTGRES = "postgresql"
 CORE_SQLALCHEMY_DATABASE_URI = "%s://%s:%s@%s:%s/%s" % (
@@ -25,7 +24,6 @@ CORE_SQLALCHEMY_DATABASE_URI = "%s://%s:%s@%s:%s/%s" % (
 
 db_engine = create_engine(CORE_SQLALCHEMY_DATABASE_URI)
 
-logger = logging.getLogger(__name__)
 logging.getLogger("sqlalchemy.engine").setLevel(logging.DEBUG)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=db_engine)
